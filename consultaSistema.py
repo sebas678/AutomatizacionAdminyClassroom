@@ -1,5 +1,7 @@
 
 from __future__ import print_function
+from datetime import datetime
+import csv
 
 import os.path
 from unicodedata import name
@@ -21,8 +23,10 @@ def consultaAlumno(mail):
     try:
         results=service.users().get(userKey=mail).execute()
         print("Si está registrado")
+        return(True)
     except:
         print("No está registrado")
+        return(False)
  
 
 
@@ -33,13 +37,27 @@ def consultaOrga(unit):
     #Consulta los usuarios por unidad
     results=service.users().list(customer='my_customer', query='orgUnitPath=/'+unit, viewType='admin_view').execute()
     users=results.get('users',[])   
+
     if not users:
         print('No  hay usuarios en esta unidad')
+
     else:
-        print('Usuarios:')
-        for user in users:
-            #Imprime los usuarios y genera reporte
-            print(user['id'],user['name']['fullName'],user['lastLoginTime'])
+        print('Existen ' +str(len(users)) +' usuarios en la unidad /'+str(unit))
+        today=datetime.now()
+        fecha=today.strftime("%d%m%Y - %H%M%S")
+        print(today)
+        r=input('Desea guardarlos en un archivo? y/n:   ')
+        
+        if r=="y":
+            with open('Usuarios en unidad '+str(unit)+' al '+str(fecha)+'.csv','w',newline='',encoding='utf-8') as file:
+                filewriter = csv.writer(file,delimiter=',',quotechar='|',quoting=csv.QUOTE_MINIMAL)
+                filewriter.writerow(['ID Usuario','Nombre','Sección', 'Id Propietario'])
+
+                print('Usuarios:')
+                for user in users:
+                    print(user)
+                    #Imprime los usuarios y genera reporte
+                    print(user['id'],user['name']['fullName'],user['lastLoginTime'])
 
 
 def consulta():

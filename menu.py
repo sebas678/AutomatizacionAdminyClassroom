@@ -7,7 +7,7 @@
 #  Crear classrooms
 from __future__ import print_function
 
-import consultaSistema
+import consultaSistema,agregaUsuarioEnAdmin, operaClassroom
 
 import os.path
 
@@ -19,7 +19,8 @@ from googleapiclient.discovery import build
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/admin.directory.user',
 'https://www.googleapis.com/auth/admin.directory.group',
-'https://www.googleapis.com/auth/admin.directory.orgunit']
+'https://www.googleapis.com/auth/admin.directory.orgunit',
+'https://www.googleapis.com/auth/classroom.courses']
 
 
 creds = None
@@ -39,14 +40,15 @@ if not creds or not creds.valid:
         token.write(creds.to_json())
 
 service = build('admin', 'directory_v1', credentials=creds)
+serviceClass = build('classroom','v1', credentials=creds)
 
 opcion= int(input("""
 Ingrese el numero correspondiente a la operación:
 
-1. Consultar alumno
-2. Agregar alumno a sistema
-3. Consultar Classroom de alumno
-4. Agregar alumno a Classroom
+1. Consultar usuario
+2. Agregar usuario a sistema
+3. Consultar Classroom de alumno No Disponible
+4. Agregar alumno a Classroom No Disponible
 5. Consultar classroom existentes
 6. Crear classroom
 
@@ -54,15 +56,21 @@ Ingrese un numero: """))
 if opcion == 1:
     #Consulta alumno en sistema
     consultaSistema.consulta()
-'''
+
 elif opcion == 2:
     #Agrgra alumno a sisteme
+    agregaUsuarioEnAdmin.agregar()
+
 elif opcion == 3:
     #consulta classroom
+    print("No disponible")
 elif opcion == 4: 
     #Agrega a classroom
+    print("No disponible")
 elif opcion == 5: 
     #Consulta classrooms existentes
+    operaClassroom.consultaActivo()
 elif opcion == 6:
     #Crea Classroom
-    '''
+    print("No disponible")
+
