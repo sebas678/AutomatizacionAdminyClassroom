@@ -1,4 +1,3 @@
-
 from __future__ import print_function
 from datetime import datetime
 import csv
@@ -21,7 +20,9 @@ def consultaAlumno(mail):
     service = build('admin', 'directory_v1', credentials=creds)
 
     try:
-        results=service.users().get(userKey=mail).execute()
+        user=service.users().get(userKey=mail).execute()
+        print("")
+        print(user['id'],user['name']['givenName'],user['name']['familyName'],user['lastLoginTime'],user['archived'],user['orgUnitPath'])
         print("Si está registrado")
         return(True)
     except:
@@ -51,14 +52,18 @@ def consultaOrga(unit):
         if r=="y":
             with open('Usuarios en unidad '+str(unit)+' al '+str(fecha)+'.csv','w',newline='',encoding='utf-8') as file:
                 filewriter = csv.writer(file,delimiter=',',quotechar='|',quoting=csv.QUOTE_MINIMAL)
-                filewriter.writerow(['ID Usuario','Nombre','Sección', 'Id Propietario'])
+                filewriter.writerow(['ID Usuario','Nombre','Apellido', 'Last Login', 'Archived', 'orgUnitPath' ])
 
                 print('Usuarios:')
                 for user in users:
-                    print(user)
                     #Imprime los usuarios y genera reporte
-                    print(user['id'],user['name']['fullName'],user['lastLoginTime'])
-
+                    print(user['id'],user['name']['givenName'],user['name']['familyName'],user['lastLoginTime'],user['archived'],user['orgUnitPath'])
+                    filewriter.writerow([user['id'],user['name']['givenName'],user['name']['familyName'],user['lastLoginTime'],user['archived'],user['orgUnitPath']])
+        elif r=="n":
+            print('Usuarios: ')
+            for user in users:
+                #Imprime los usuarios y genera reporte
+                print(user['id'],user['name']['givenName'],user['name']['familyName'],user['lastLoginTime'],user['archived'],user['orgUnitPath'])
 
 def consulta():
     opcion = int(input("""
@@ -74,6 +79,6 @@ def consulta():
 
     elif opcion==2:
         unidad=input("""
-        
-        Ingrese unidad organizativa: """)
+        Ingrese unidad organizativa: 
+        """)
         consultaOrga(unidad)

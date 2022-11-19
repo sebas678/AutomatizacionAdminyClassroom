@@ -2,10 +2,8 @@ from __future__ import print_function
 from datetime import datetime
 import csv
 
-
 import os.path
 from unicodedata import name
-
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -21,7 +19,7 @@ SCOPES = ['https://www.googleapis.com/auth/admin.directory.user',
 def consultaActivo():
     creds = Credentials.from_authorized_user_file('token.json', SCOPES)
     service = build('classroom', 'v1', credentials=creds)
-    results = service.courses().list(courseStates='ACTIVE',teacherId='cpedagogica@ccbantigua.edu.gt').execute()
+    results = service.courses().list(courseStates='ACTIVE').execute()
     courses = results.get('courses', [])
 
     if not courses:
