@@ -7,7 +7,7 @@
 #  Crear classrooms
 from __future__ import print_function
 
-import consultaSistema,agregaUsuarioEnAdmin, operaClassroom, agregaEnClassroom,archivar
+import consultaSistema,agregaUsuarioEnAdmin, operaClassroom, agregaEnClassroom,archivar, creaClassroom, generaCorreo
 
 import os.path
 
@@ -48,10 +48,11 @@ Ingrese el numero correspondiente a la operación:
 1. Consultar usuario
 2. Agregar usuario a sistema
 3. Agregar alumno a Classroom
-4. Archivar Classroom   No disponible
+4. Eliminar usuarios    No disponible
 5. Consultar classroom existentes
 6. Crear classroom      No disponible
 7. Archivar classroom
+8. Crear correos (En proceso)
 
 Ingrese un numero: """))
 if opcion == 1:
@@ -73,9 +74,12 @@ elif opcion == 5:
     operaClassroom.consultaActivo()
 elif opcion == 6:
     #Crea Classroom
+    creaClassroom.main()
     print("No disponible")
 
 elif opcion == 7:
     #Archiva TODOS los classroom
     archivar.main()
 
+elif opcion == 8:
+    generaCorreo.main()
